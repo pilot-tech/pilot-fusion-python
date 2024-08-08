@@ -36,3 +36,35 @@ set_google_api_key('your-google-api-key')
 
 # Set the Mistral API key
 set_mistral_api_key('your-mistral-api-key')
+```
+
+### 2. Using LLMs for Code Generation
+
+You can generate code using different LLMs by creating an instance of the corresponding generator class.
+
+```python
+from llm_integrator.gemini_interface import GeminiCodeGenerator
+
+# Initialize the Gemini code generator
+gemini_generator = GeminiCodeGenerator()
+
+# Generate code based on a prompt
+prompt = "Create a diagram for a microservices architecture."
+code = gemini_generator.generate_code(prompt)
+
+print(code)
+```
+
+### 3. Using LLMs for Text Generation
+
+
+Similar to code generation, you can also generate text responses using different LLMs.
+
+Example:
+
+```python
+# Generate a text response based on a prompt
+text = gemini_generator.generate_text("Explain the benefits of using microservices.")
+
+print(text)
+```
