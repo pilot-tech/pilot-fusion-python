@@ -98,5 +98,17 @@ class NewLLMCodeGenerator(CodeGenerator):
         response = model.generate_content(full_prompt)
         return {"text": response.text.strip()}
 ```
+## Contribution
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contact
+
+If you have any questions, feel free to open an issue or contact the repository maintainers.
+
 
 
