@@ -68,3 +68,35 @@ text = gemini_generator.generate_text("Explain the benefits of using microservic
 
 print(text)
 ```
+
+## Adding Support for New LLMs
+
+The package is designed to be extensible. To add a new LLM:
+
+1. Create a new class that inherits from `CodeGenerator`.
+2. Implement the `get_model_response` method to interact with the new LLM's API.
+3. Add configuration functions for the new LLM's API key in `config.py`.
+
+### Example Skeleton for Adding a New LLM
+
+```python
+from llm_integrator.commonllm import CodeGenerator
+from llm_integrator.config import get_newllm_api_key
+import newllm
+
+class NewLLMCodeGenerator(CodeGenerator):
+    def __init__(self):
+        super().__init__('newllm')
+        self.configure_api_key()
+
+    def configure_api_key(self):
+        api_key = get_newllm_api_key()
+        newllm.configure(api_key=api_key)
+
+    def get_model_response(self, full_prompt: str):
+        model = newllm.GenerativeModel('newllm-model')
+        response = model.generate_content(full_prompt)
+        return {"text": response.text.strip()}
+```
+
+
