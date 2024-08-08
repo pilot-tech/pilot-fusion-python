@@ -14,12 +14,6 @@ class OpenaiCodeGenerator(CodeGenerator):
         genai.configure(api_key=api_key)
 
     def get_model_response(self, full_prompt: str):
-        model = genai.GenerativeModel('gemini-1.5-pro')
-        response = model.generate_content(full_prompt)
-        return {"text": response.text.strip()}
-
-
-    def get_model_response(self, full_prompt: str):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": full_prompt}]
