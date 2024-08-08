@@ -62,9 +62,9 @@ def test_format_imports():
     expected_code = "from diagrams.aws.compute import EC2\nEC2 = [EC2]\nfrom diagrams.aws.network import VPC\nVPC = [VPC]"
     assert format_imports(relevant_imports) == expected_code
 
-def test_generate_code(setup_generator):
+def test_generate_diagram(setup_generator):
     prompt = "Create a diagram with EC2 and VPC"
-    generated_code = setup_generator.generate_code(prompt)
+    generated_code = setup_generator.generate_diagram(prompt)
     
    
     assert re.search(r'# Mock code', generated_code) is not None
@@ -76,9 +76,9 @@ def test_generate_text(setup_generator):
     
     assert "Mock text" in generated_text
 
-def test_generate_code_general(setup_generator):
+def test_generate_code(setup_generator):
     prompt = "Write a basic Hello World script"
-    generated_code = setup_generator.generate_code_general(prompt)
+    generated_code = setup_generator.generate_code(prompt)
     
 
     assert re.search(r'# Default mock code', generated_code) is not None
