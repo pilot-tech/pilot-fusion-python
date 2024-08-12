@@ -1,11 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pilot-py-hub-aggregator',
-    version='0.0.1',
+    name='pilot-fusion',
+    version='0.0.2',
     packages=find_packages(),
     install_requires=[
-        'google-generativeai'
+        'google-generativeai',
+        'PyPDF2',
+        'pandas',
+        'openai',
+        'anthropic',
+        'mistralai',
+
+
     ],
     author='Piyush Kumar',
     author_email='piyush@pilot-tech.co',
