@@ -4,6 +4,9 @@ import ast
 import importlib
 from datetime import datetime
 from abc import ABC, abstractmethod
+from PyPDF2 import PdfReader
+
+import pandas as pd
 
 diagrams_data = {
     "diagrams.onprem.aggregator": ["Fluentd", "Vector"],
@@ -1036,6 +1039,27 @@ class CodeGenerator(ABC):
             return code
         else:
             raise ValueError("No code block found in the response.")       
+        
+    def generate_response_from_file(self, file_path: str, user_prompt: str) -> str:
+        file_extension = os.path.splitext(file_path)[1].lower()
+        
+        if file_extension == '.pdf':
+            file_content = self.extract_text_from_pdf(file_path)
+        elif file_extension == '.txt':
+            with open(file_path, 'r', encoding='utf-8') as file:
+                file_content = file.read()
+        else:
+            raise ValueError("Unsupported file type. Only PDF and TXT files are supported.")
+        
+        combined_prompt = f"{file_content}\n\nUser Question: {user_prompt}"
+        return self.generate_text(combined_prompt)
+    
+    def extract_text_from_pdf(self, file_path: str) -> str:
+        reader = PdfReader(file_path)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+        return text        
     
     @abstractmethod
     def get_model_response(self, full_prompt: str):
@@ -1055,33 +1079,53 @@ class CodeGenerator(ABC):
                 except ImportError as e:
                     raise ValueError(f"Import error in generated code: {e}")
 
-    def log_text(self, prompt: str, content: str):
+    def log_text(self, prompt: str, content: str, format: str = "txt"):
         directory = 'generated_text'
         os.makedirs(directory, exist_ok=True)
         
-        log_filename = os.path.join(directory, f'{self.model_name}_text_log.txt')
-        
-        with open(log_filename, 'a') as file:
-            file.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            file.write("User Prompt:\n")
-            file.write(prompt + "\n\n")
-            file.write("Generated Text:\n")
-            file.write(content + "\n\n")
-            file.write("="*80 + "\n\n")      
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if format == "txt":
+            log_filename = os.path.join(directory, f'{self.model_name}_text_log.txt')
+            with open(log_filename, 'a') as file:
+                file.write(f"Timestamp: {timestamp}\n")
+                file.write("User Prompt:\n")
+                file.write(prompt + "\n\n")
+                file.write("Generated Text:\n")
+                file.write(content + "\n\n")
+                file.write("="*80 + "\n\n")
+        elif format == "excel":
+            log_filename = os.path.join(directory, f'{self.model_name}_text_log.xlsx')
+            df = pd.DataFrame([[timestamp, prompt, content]], columns=["Timestamp", "User Prompt", "Generated Text"])
+            if os.path.exists(log_filename):
+                with pd.ExcelWriter(log_filename, mode="a", if_sheet_exists="overlay") as writer:
+                    df.to_excel(writer, sheet_name="TextLog", index=False, header=False, startrow=writer.sheets["TextLog"].max_row)
+            else:
+                with pd.ExcelWriter(log_filename) as writer:
+                    df.to_excel(writer, sheet_name="TextLog", index=False)
 
-    def log_code(self, prompt: str, code: str):
+    def log_code(self, prompt: str, code: str, format: str = "txt"):
         directory = 'generated_code'
         os.makedirs(directory, exist_ok=True)
         
-        log_filename = os.path.join(directory, f'{self.model_name}_code_log.txt')
-        
-        with open(log_filename, 'a') as file:
-            file.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            file.write("User Prompt:\n")
-            file.write(prompt + "\n\n")
-            file.write("Generated Code:\n")
-            file.write(code + "\n\n")
-            file.write("="*80 + "\n\n")
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if format == "txt":
+            log_filename = os.path.join(directory, f'{self.model_name}_code_log.txt')
+            with open(log_filename, 'a') as file:
+                file.write(f"Timestamp: {timestamp}\n")
+                file.write("User Prompt:\n")
+                file.write(prompt + "\n\n")
+                file.write("Generated Code:\n")
+                file.write(code + "\n\n")
+                file.write("="*80 + "\n\n")
+        elif format == "excel":
+            log_filename = os.path.join(directory, f'{self.model_name}_code_log.xlsx')
+            df = pd.DataFrame([[timestamp, prompt, code]], columns=["Timestamp", "User Prompt", "Generated Code"])
+            if os.path.exists(log_filename):
+                with pd.ExcelWriter(log_filename, mode="a", if_sheet_exists="overlay") as writer:
+                    df.to_excel(writer, sheet_name="CodeLog", index=False, header=False, startrow=writer.sheets["CodeLog"].max_row)
+            else:
+                with pd.ExcelWriter(log_filename) as writer:
+                    df.to_excel(writer, sheet_name="CodeLog", index=False)
     
     def parse_response(self, response):
         if 'text' in response:

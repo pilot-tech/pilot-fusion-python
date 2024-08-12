@@ -8,7 +8,7 @@ setup(
         'google-generativeai'
     ],
     author='Piyush Kumar',
-    author_email='piyushkumar121@gmail.com',
+    author_email='piyush@pilot-tech.co',
     description='A package for generating code using various AI models.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
