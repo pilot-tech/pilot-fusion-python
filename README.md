@@ -98,6 +98,63 @@ class NewLLMCodeGenerator(CodeGenerator):
         response = model.generate_content(full_prompt)
         return {"text": response.text.strip()}
 ```
+
+# Code Generators Using Different AI Models
+
+### 1. Gemini Code Generator
+
+This generator uses Google's Gemini model.
+
+```python
+from generators.gemini import GeminiCodeGenerator
+
+generator = GeminiCodeGenerator(model_name="gemini-1.5-pro")
+code = generator.generate_diagram("Create a system diagram for a web application using React, Node.js, and MongoDB.")
+print(code)
+```
+### 2. OpenAI Code Generator
+
+This generator uses OpenAI's models like GPT-3.5-turbo.
+
+```python
+from generators.openai import OpenaiCodeGenerator
+
+generator = OpenaiCodeGenerator(model_name="gpt-3.5-turbo")
+code = generator.generate_code("Create a Python function that sorts a list of numbers.")
+print(code)
+
+```
+
+### 3. Mistral Code Generator
+
+This generator uses the Mistral model.
+
+
+```python
+from generators.mistral import MistralCodeGenerator
+
+generator = MistralCodeGenerator(model_name="codestral-mamba-latest")
+code = generator.generate_diagram("Create a flowchart for an e-commerce application.")
+print(code)
+
+
+```
+### 4. Claude Code Generator
+
+This generator uses Anthropic's Claude model.
+
+
+```python
+from generators.claude import ClaudeCodeGenerator
+
+generator = ClaudeCodeGenerator(model_name="claude-3-5-sonnet-20240620")
+code = generator.generate_diagram("Generate a UML diagram for a microservices architecture.")
+print(code)
+
+
+
+```
+
 ## Contribution
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
