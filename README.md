@@ -26,7 +26,7 @@ Before using the LLMs, you need to set the API keys. The package provides utilit
 **Example:**
 
 ```python
-from aggregator.config import set_openai_api_key, set_google_api_key, set_mistral_api_key
+from pilot_fusion.config import set_openai_api_key, set_google_api_key, set_mistral_api_key
 
 # Set the OpenAI API key
 set_openai_api_key('your-openai-api-key')
@@ -43,7 +43,7 @@ set_mistral_api_key('your-mistral-api-key')
 You can generate code using different LLMs by creating an instance of the corresponding generator class.
 
 ```python
-from aggregator.gemini_integration import GeminiCodeGenerator
+from pilot_fusion.gemini_integration import GeminiCodeGenerator
 
 # Initialize the Gemini code generator
 gemini_generator = GeminiCodeGenerator()
@@ -80,8 +80,8 @@ The package is designed to be extensible. To add a new LLM:
 ### Example Skeleton for Adding a New LLM
 
 ```python
-from aggregator.commonllm import CodeGenerator
-from aggregator.config import get_newllm_api_key
+from pilot_fusion.commonllm import CodeGenerator
+from pilot_fusion.config import get_newllm_api_key
 import newllm
 
 class NewLLMCodeGenerator(CodeGenerator):
@@ -106,7 +106,7 @@ class NewLLMCodeGenerator(CodeGenerator):
 This generator uses Google's Gemini model.
 
 ```python
-from aggregator.gemini_integration import GeminiCodeGenerator
+from pilot_fusion.gemini_integration import GeminiCodeGenerator
 
 generator = GeminiCodeGenerator(model_name="gemini-1.5-pro")
 code = generator.generate_diagram("Create a system diagram for a web application using React, Node.js, and MongoDB.")
@@ -117,7 +117,7 @@ print(code)
 This generator uses OpenAI's models like GPT-3.5-turbo.
 
 ```python
-from aggregator.openai_integration import OpenaiCodeGenerator
+from pilot_fusion.openai_integration import OpenaiCodeGenerator
 
 generator = OpenaiCodeGenerator(model_name="gpt-3.5-turbo")
 code = generator.generate_code("Create a Python function that sorts a list of numbers.")
@@ -131,7 +131,7 @@ This generator uses the Mistral model.
 
 
 ```python
-from aggregator.mistral_integration import MistralCodeGenerator
+from pilot_fusion.mistral_integration import MistralCodeGenerator
 
 generator = MistralCodeGenerator(model_name="codestral-mamba-latest")
 code = generator.generate_diagram("Create a flowchart for an e-commerce application.")
@@ -145,7 +145,7 @@ This generator uses Anthropic's Claude model.
 
 
 ```python
-from aggregator.claude_integration import ClaudeCodeGenerator
+from pilot_fusion.claude_integration import ClaudeCodeGenerator
 
 generator = ClaudeCodeGenerator(model_name="claude-3-5-sonnet-20240620")
 code = generator.generate_diagram("Generate a UML diagram for a microservices architecture.")
