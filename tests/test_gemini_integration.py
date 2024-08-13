@@ -1,8 +1,8 @@
 
 import pytest
 from unittest.mock import patch, MagicMock
-from aggregator.gemini_integration import GeminiCodeGenerator
-from aggregator.config import get_google_api_key , set_google_api_key
+from pilot_fusion.gemini_integration import GeminiCodeGenerator
+from pilot_fusion.config import get_google_api_key , set_google_api_key
 
 
 set_google_api_key("mock-key")

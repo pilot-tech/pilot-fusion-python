@@ -2,7 +2,7 @@ import pytest
 import os
 import re
 from unittest.mock import patch, MagicMock
-from aggregator.commonllm import CodeGenerator, extract_relevant_imports, format_imports, extract_all_imports
+from pilot_fusion.commonllm import CodeGenerator, extract_relevant_imports, format_imports, extract_all_imports
 
 class MockCodeGenerator(CodeGenerator):
     def get_model_response(self, full_prompt: str):

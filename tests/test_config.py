@@ -1,6 +1,6 @@
 import pytest
 import os
-from aggregator.config import (
+from pilot_fusion.config import (
     set_google_api_key,
     get_google_api_key,
     set_openai_api_key,

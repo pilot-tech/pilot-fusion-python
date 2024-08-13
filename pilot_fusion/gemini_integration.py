@@ -17,7 +17,4 @@ class GeminiCodeGenerator(CodeGenerator):
         response = model.generate_content(full_prompt)
         return {"text": response.text.strip()}
     
-
-    
-    
-
+   
